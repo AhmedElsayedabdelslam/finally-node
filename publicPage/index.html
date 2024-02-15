@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- <link rel="stylesheet" href="../publicPage/css/all.css"> -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <section>
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+                                <form>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="form3Example1cg"
+                                            class="form-control form-control-lg inp1" />
+                                        <label class="form-label" for="form3Example1cg">Your Name</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="form3Example3cg"
+                                            class="form-control form-control-lg inp2" />
+                                        <label class="form-label" for="form3Example3cg">Your Email</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="form3Example4cdg"
+                                            class="form-control form-control-lg  inp3" />
+                                        <label class="form-label" for="form3Example4cdg">password</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="form3Example4cg"
+                                            class="form-control form-control-lg inp4" />
+                                        <label class="form-label" for="form3Example4cg">age</label>
+                                    </div>
+
+                                    <label class="lbl1"></label>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                    </div>
+
+                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="login"
+                                            class="fw-bold text-body"><u>Login here</u></a></p>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        const button1 = document.querySelector(".btn")
+        const errorMassage = document.querySelector(".lbl1")
+
+        function submitform(e) {
+            // location.reload()
+            const username = document.querySelector(".inp1").value
+            const email = document.querySelector(".inp2").value
+            const password = document.querySelector(".inp3").value
+            const age = document.querySelector(".inp4").value
+            e.preventDefault()
+            if (username === "" || email === "" || age === "" || password === "") {
+                alert("please complete the form")
+            } else {
+                fetch("http://localhost:3000/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username, email: email, age: age, password: password })
+                })
+                    .then(response => response.json())
+                    .then((data) => {
+                        if (Object.keys(data.errors).length == 0) {
+                            console.log(data)
+                            // localStorage.setItem("username", username);
+                            // localStorage.setItem("email", email);
+                            // localStorage.setItem("age", age);
+                            // localStorage.setItem("password", password);
+                            errorMassage.innerHTML = ""
+                            setTimeout(() => {
+                                window.location = "login"
+
+                            }, 100)
+
+                        } else {
+                            if (Object.keys(data.errors).toString() == "email") {
+                                errorMassage.innerHTML = data.errors.email.message
+                            } else if (Object.keys(data.errors).toString() == "password") {
+                                errorMassage.innerHTML = data.errors.password.message
+                            }
+                            else if (Object.keys(data.errors).toString() == "age") {
+                                errorMassage.innerHTML = data.errors.age.message
+                            } else if (Object.keys(data.errors).toString() == "password,email") {
+                                errorMassage.innerHTML = data.errors.email.message + "//" + data.errors.password.message
+                            } else if (Object.keys(data.errors).toString() == "age,email") {
+                                errorMassage.innerHTML = data.errors.email.message + "//" + data.errors.age.message
+                            } else if (Object.keys(data.errors).toString() == "age,password") {
+                                errorMassage.innerHTML = data.errors.password.message + "//" + data.errors.age.message
+                            }
+                            else if (Object.keys(data.errors).toString() == "age,password,email") {
+                                errorMassage.innerHTML = data.errors.password.message + "//" + data.errors.age.message + "//" + data.errors.email.message
+                            }
+                        }
+
+                    }).catch((e) => {
+                        errorMassage.innerHTML = "Email is already exist please enter anthor email"
+                    })
+
+
+
+
+            }
+
+            // location.reload()
+        }
+        button1.addEventListener('click', submitform)
+
+    </script>
+    <script src="bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>updataUser</title>
+    <link rel="stylesheet" href="bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(90deg, #252222 0%, gray 80%);
+        }
+
+        .btn1 {
+            width: 500px;
+            height: 50px;
+            margin-top: 16px;
+            margin-left: 100px;
+            border-radius: 20px;
+            background-color: rgb(146, 143, 143);
+            color: white;
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .input1 {
+            width: 400px;
+            height: 50px;
+            border-radius: 15px;
+            color: gray;
+            margin: auto;
+            box-shadow: white;
+
+        }
+
+        table {
+            width: 90%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid;
+            color: white;
+            font-size: 17px;
+            font-style: italic;
+
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgb(141, 185, 196);
+            color: white;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: rgb(170, 167, 167);
+            color: white;
+
+        }
+
+        .msg {
+            color: green;
+        }
+
+        .sec {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .more {
+            margin: auto;
+            display: flex;
+            align-items: center;
+        }
+        .btn22 {
+            background-color: gray;
+            color: white;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="d-flex justify-content-start">
+        <button type="button" class="btn1 ">Enter the email of
+            the person you want to updata</button>
+    </div>
+    <div class="more" style="margin-top: 30px;  width: 100%">
+        <input type="email" id="form3Example3cg" class="input1">
+    </div>
+    <label class="lbl"></label>
+    <table style="margin: auto;">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>email</th>
+                <th>password</th>
+                <th>age</th>
+            </tr>
+        </thead>
+        <tbody class="bo">
+            <tr>
+                <td class="td1"></td>
+                <td class="td2"></td>
+                <td class="td3"></td>
+                <td class="td4"></td>
+                <td class="td5"></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <section class="sec" style="height: 300px;">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <h2 class="text-uppercase text-center mb-5">Update Here</h2>
+
+                                <form>
+                                    <div class="form-outline mb-4" style="visibility: hidden;">
+                                        <input type="text" id="form3Example1cg"
+                                            class="form-control form-control-lg inp0" />
+                                        <label class="form-label" for="form3Example1cg">ID</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="form3Example1cg"
+                                            class="form-control form-control-lg inp1" />
+                                        <label class="form-label" for="form3Example1cg">Your Name</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="email" id="form3Example3cg"
+                                            class="form-control form-control-lg inp2" />
+                                        <label class="form-label" for="form3Example3cg">Your Email</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="password" id="form3Example4cdg"
+                                            class="form-control form-control-lg  inp3" />
+                                        <label class="form-label" for="form3Example4cdg">password</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input type="text" id="form3Example4cg"
+                                            class="form-control form-control-lg inp4" />
+                                        <label class="form-label" for="form3Example4cg">age</label>
+                                    </div>
+                                    <label class="msg"></label>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button"
+                                            class="btn22  btn-block btn-lg gradient-custom-4 text-body">Updata</button>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const td1 = document.querySelector(".td1")
+        const td2 = document.querySelector(".td2")
+        const td3 = document.querySelector(".td3")
+        const td4 = document.querySelector(".td4")
+        const td5 = document.querySelector(".td5")
+        const lbl = document.querySelector(".lbl")
+        const id = document.querySelector(".inp0")
+        const username = document.querySelector(".inp1")
+        const email = document.querySelector(".inp2")
+        const password = document.querySelector(".inp3")
+        const age = document.querySelector(".inp4")
+        const msg = document.querySelector(".msg")
+        const section = document.querySelector(".sec")
+        const buttonUpdata = document.querySelector(".btn22")
+        const button1 = document.querySelector(".btn1")
+        const inp = document.querySelector(".input1").value
+        button1.addEventListener("click", async function () {
+            await fetch("http://localhost:3000/userDetails")
+                .then((users) => users.json())
+                .then((users) => {
+                    const inp = document.querySelector(".input1").value
+                    function getData() {
+                        return users.filter((e) => {
+                            return e.email == inp; // fetch array object if it matches the value
+                        })
+                    }
+                    var result = getData();
+                    if (result.length == 0) {
+                        lbl.innerHTML = "there is no person with this email";
+                    } else {
+                        console.log(result)
+                        let idUser = result.map(a => a._id)
+                        td1.innerHTML = idUser.toString()
+                        id.value = idUser
+                        let username1 = result.map(a => a.username)
+                        td2.innerHTML = username1.toString()
+                        username.value = username1
+                        let email1 = result.map(a => a.email)
+                        td3.innerHTML = email1.toString()
+                        email.value = email1
+                        let password1 = result.map(a => a.password)
+                        td4.innerHTML = password1.toString()
+                        password.value = password1
+                        let age1 = result.map(a => a.age)
+                        td5.innerHTML = age1.toString()
+                        age.value = age1
+                        section.style.display = "block"
+
+
+                        // for updata 
+                        function submitform(e) {
+                            // location.reload()
+                            const id = document.querySelector(".inp0").value
+                            const username = document.querySelector(".inp1").value
+                            const email = document.querySelector(".inp2").value
+                            const password = document.querySelector(".inp3").value
+                            const age = document.querySelector(".inp4").value
+                            e.preventDefault()
+
+                            fetch("http://localhost:3000/updataUser", {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ id: id, username: username, email: email, age: age, password: password })
+                            })
+                                .then(response => response.json())
+                                .then((data) => {
+                                    console.log(data)
+                                    msg.innerHTML = "Successufly Updata"
+
+
+                                }).catch((e) => {
+                                    console.log(e)
+                                })
+
+
+                        }
+                        buttonUpdata.addEventListener('click', submitform)
+
+                    }
+                }
+                )
+
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>

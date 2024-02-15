@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Information</title>
+
+
+
+
+    <style>
+        body {
+            background: linear-gradient(90deg, #252222 0%, gray 80%);
+        }
+
+        .bnt {
+            width: 400px;
+            height: 50px;
+            margin-top: 16px;
+            margin-left: 100px;
+            border-radius: 20px;
+            background-color: rgb(146, 143, 143);
+            color: white;
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 700;
+            font-style: italic;
+            cursor: pointer;
+        }
+
+        table {
+            width: 90%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid;
+            color: white;
+            font-size: 17px;
+            font-style: italic;
+            
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgb(141, 185, 196);
+            color: white;
+            height: 50px;
+            
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: rgb(170, 167, 167);
+            color: white;
+             height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="bnt">get information of all users</button>
+    <table style="margin: auto; margin-top: 30px;">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>email</th>
+                <th>password</th>
+                <th>age</th>
+            </tr>
+        </thead>
+        <tbody class="bo">
+
+
+        </tbody>
+    </table>
+
+    <script>
+        const button1 = document.querySelector(".bnt")
+
+        button1.addEventListener("click", async function () {
+            await fetch("http://localhost:3000/userDetails")
+                .then((users) => users.json())
+                .then((users) => {
+                    const tbody = document.querySelector(".bo")
+                    users.forEach(users => {
+                        const row = document.createElement('tr');
+                        const idCell = document.createElement('td');
+                        idCell.textContent = users._id;
+                        row.appendChild(idCell);
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = users.username;
+                        row.appendChild(nameCell);
+
+                        const emailCell = document.createElement('td');
+                        emailCell.textContent = users.email;
+                        row.appendChild(emailCell);
+
+                        const passworCell = document.createElement('td');
+                        passworCell.textContent = users.password;
+                        row.appendChild(passworCell);
+
+                        const ageCell = document.createElement('td');
+                        ageCell.textContent = users.age;
+                        row.appendChild(ageCell);
+                        tbody.appendChild(row);
+
+
+                    })
+
+                })
+
+        })
+
+
+    </script>
+</body>
+
+</html>

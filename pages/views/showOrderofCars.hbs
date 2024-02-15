@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>order-cars-Information</title>
+
+
+
+
+    <style>
+         body {
+            background: linear-gradient(90deg, #252222 0%, gray 80%);
+        }
+        .parent {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .son1 {
+            width: 60%;
+        }
+            .bnt {
+            width: 500px;
+            height: 50px;
+            margin-top: 16px;
+            margin-left: 100px;
+            border-radius: 20px;
+            background-color: rgb(146, 143, 143);
+            color: white;
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .son2 {
+            width: 25%;
+            height: 250px;
+            border: 2px solid gray;
+            display: none;
+            position: fixed;
+            margin-left: 900px;
+        }
+
+        .lbl1 {
+            font-size: large;
+            font-style: italic;
+            color: rgb(241, 231, 231);
+        }
+
+        .lbl2 {
+            font-size: large;
+            font-style: italic;
+            color: rgb(30, 215, 228);
+            font-weight: bold;
+        }
+
+    table {
+            width: 85%;
+            text-align: center;
+            margin-top: 30px;
+            margin-left: 60px;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid;
+            color: white;
+            font-size: 17px;
+            font-style: italic;
+
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgb(141, 185, 196);
+            color: white;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: rgb(170, 167, 167);
+            color: white;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="son1">
+            <button class="bnt">get information of all  order cars</button>
+            <table style="margin: auto;">
+                <thead>
+                    <tr>
+
+                        <th>id</th>
+                        <th>carName</th>
+                        <th>price</th>
+                        <th>owner</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody class="bo">
+
+
+                </tbody>
+            </table>
+            <input class="inp" type="text" style="visibility: hidden;">
+        </div>
+        <div class="son2">
+            <h2>Owner of the order</h2>
+            <label for="" class="lbl1">username :</label> <label class="lbl2" id="lb1"></label><br><br>
+            <label for="" class="lbl1">email :</label> <label class="lbl2" id="lb2"></label><br><br>
+            <label for="" class="lbl1">age :</label> <label class="lbl2" id="lb3"></label><br><br>
+
+
+        </div>
+
+
+    </div>
+    </div>
+
+    <script>
+        const button1 = document.querySelector(".bnt")
+        const label1 = document.querySelector("#lb1")
+        const label2 = document.querySelector("#lb2")
+        const label3 = document.querySelector("#lb3")
+        const son2 = document.querySelector(".son2") 
+        const input = document.querySelector(".inp")
+        const labelid = document.querySelector(".classId")
+        const submitdelete = document.querySelector(".butt")
+
+        button1.addEventListener("click", async function () {
+            await fetch("http://localhost:3000/task2OrderDetails")
+                .then((order) => order.json())
+                .then((order) => {
+                    const tbody = document.querySelector(".bo")
+                    order.forEach(order => {
+                        const row = document.createElement('tr');
+                        const idCell = document.createElement('td');
+                        idCell.textContent = order._id;
+                        row.appendChild(idCell);
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = order.carName;
+                        row.appendChild(nameCell);
+
+                        const priceCell = document.createElement('td');
+                        priceCell.textContent = order.price;
+                        row.appendChild(priceCell);
+
+                        const buttonCell = document.createElement('td');
+                        const button = document.createElement("button")
+                        button.innerHTML = order.owner
+                        buttonCell.appendChild(button)
+                        row.appendChild(buttonCell)
+
+                        const deleteCell = document.createElement('td');
+                        const button2 = document.createElement("button")
+                        button2.innerHTML = order._id
+                        deleteCell.appendChild(button2)
+                        row.appendChild(deleteCell)
+
+                        tbody.appendChild(row);
+
+                        button.addEventListener("click", async () => {
+                            console.log("hhjhgdsh")
+                            await fetch('http://localhost:3000/userDetails')
+                                .then((users) => users.json())
+                                .then((users) => {
+                                    function getData() {
+                                        return users.filter((e) => {
+                                            return e._id == button.textContent // fetch array object if it matches the value
+                                        })
+                                    }
+                                    var result = getData();
+                                    if (!result) {
+                                        alert("You delete this account or user make logout")
+                                    }
+                                    result.forEach((user) => {
+                                        son2.style.display = "block"
+                                        label1.innerHTML = user.username
+                                        label2.innerHTML = user.email
+                                        label3.innerHTML = user.age
+                                        son2.style.display = "block"
+
+                                    })
+                                })
+                        })
+
+                         button2.addEventListener("click", (e) => {
+                            input.value = button2.textContent
+                            const _id = button2.textContent
+                            fetch("http://localhost:3000/showOrderofCars", {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ _id: _id })
+                            })
+                                .then(response => response.json())
+                                .then((data) => {
+                                    alert("You have deleted task")
+                                    console.log(data)
+                                    location.reload()
+                                }).catch((e) => {
+                                    console.log(e)
+                                })
+
+                        })
+
+
+                    })
+
+                })
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>
